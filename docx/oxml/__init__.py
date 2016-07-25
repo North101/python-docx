@@ -199,3 +199,7 @@ from .text.run import CT_Br, CT_R, CT_Text
 register_element_cls('w:br', CT_Br)
 register_element_cls('w:r',  CT_R)
 register_element_cls('w:t',  CT_Text)
+
+from .header import CT_HeaderFooter
+register_element_cls('w:hdr',  CT_HeaderFooter)
+register_element_cls('w:ftr',  CT_HeaderFooter)

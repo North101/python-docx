@@ -123,6 +123,17 @@ class CT_SectPr(BaseOxmlElement):
             return matches[0]
         return None
 
+    def get_footerReference_of_type(self, type_member):
+        """
+        Return the `w:w:footerReference` child having type attribute value
+        associated with *type_member*, or |None| if not present.
+        """
+        type_str = WD_HEADER_FOOTER.to_xml(type_member)
+        matches = self.xpath('w:footerReference[@w:type="%s"]' % type_str)
+        if matches:
+            return matches[0]
+        return None
+
     @property
     def gutter(self):
         """

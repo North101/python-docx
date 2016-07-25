@@ -24,23 +24,26 @@ class _BaseHeaderFooter(ElementProxy):
         self._sectPr = element
         self._type = type
 
+    def _get_reference_of_type(self):
+        raise NotImplemented()
+
     @lazyproperty
     def body(self):
         """
-        BlockItemContainer instance with contents of Header
+        BlockItemContainer instance with contents of Header or Footer
         """
-        headerReference = self._sectPr.get_headerReference_of_type(self._type)
-        if headerReference is None:
+        ref = self._get_reference_of_type()
+        if ref is None:
             return None
-        return self.part.related_hdrftr_body(headerReference.rId)
+        return self.part.related_hdrftr_body(ref.rId)
 
     @property
     def is_linked_to_previous(self):
         """
-        Boolean representing whether this Header is inherited from
+        Boolean representing whether this Header or Footer is inherited from
         a previous section.
         """
-        ref = self._sectPr.get_headerReference_of_type(self._type)
+        ref = self._get_reference_of_type()
         if ref is None:
             return True
         return False
@@ -50,6 +53,18 @@ class Header(_BaseHeaderFooter):
     """
     One of the page headers for a section.
     """
+
+    def _get_reference_of_type(self):
+        return self._sectPr.get_headerReference_of_type(self._type)
+
+
+class Footer(_BaseHeaderFooter):
+    """
+    One of the page footers for a section.
+    """
+
+    def _get_reference_of_type(self):
+        return self._sectPr.get_footerReference_of_type(self._type)
 
 
 class HeaderFooterBody(BlockItemContainer):

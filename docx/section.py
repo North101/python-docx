@@ -9,7 +9,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 from collections import Sequence
 
 from .enum.header import WD_HEADER_FOOTER
-from .header import Header
+from .header import Header, Footer
 from .shared import ElementProxy, lazyproperty
 
 
@@ -57,6 +57,16 @@ class Section(ElementProxy):
     @bottom_margin.setter
     def bottom_margin(self, value):
         self._sectPr.bottom_margin = value
+
+    @lazyproperty
+    def footer(self):
+        """
+        Return the |Footer| object representing the default header for this
+        section. A |Footer| object is always returned, whether such a header
+        is present or not. The header itself is added, updated, or removed
+        using the returned object.
+        """
+        return Footer(self._sectPr, self, WD_HEADER_FOOTER.PRIMARY)
 
     @property
     def footer_distance(self):
